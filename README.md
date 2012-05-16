@@ -2,7 +2,7 @@ This projects contains a sample integration application that demostrates how to 
 
 This sample is based around a fictional flight booking application. The core process takes flight details which were previously gathered, and if there exists a plugin for the requested airline it accept payment for the ticket and calls out to the airline's back-end to place the booking. 
 
-Airline plugins are OSGi bundles that use Apache Camel for the integration to their respective systems.
+Airline plugins are OSGi bundles that use [Camel](http://fusesource.com/products/enterprise-camel/) for the integration to their respective systems.
 
 Project layout
 ==============
@@ -18,7 +18,7 @@ There is also an additional parent project `camel-bundle` that simplifies the Ma
 
 Prerequisites
 =============
-Set up ServiceMix by downloading the latest 4.4.1+ version from [FuseSource](http://fusesource.com/products/enterprise-servicemix/). The installation guide can be reached from the Documentation tab on that page. 
+Set up [ServiceMix](http://fusesource.com/products/enterprise-servicemix/) by downloading the latest 4.4.1+ version from [FuseSource](http://fusesource.com/). The installation guide can be reached from the Documentation tab on that page. 
 
 Ensure that Maven is set up on your system. 
 
