@@ -1,0 +1,58 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:camel="http://camel.apache.org/schema/spring"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+    <bean id="bookingProcessorRegistry" class="com.fusesource.examples.flights.BookingProcessorRegistry" >
+    	<property name="bookingProcessors" ref="bookingProcessors" />
+    </bean>
+
+    <bean id="bookingResponseAggregationStrategy" class="com.fusesource.examples.flights.BookingResponseAggregationStrategy" />
+
+    <camelContext id="bookings" xmlns="http://camel.apache.org/schema/spring">
+      	<propertyPlaceholder id="properties" location="ref:osgi.properties"/>
+
+		<route id="placeBooking">
+			<from uri="jetty:http://{{host}}:9191/booking" />
+			<transform>
+				<simple>${headers.flightNumber}</simple>
+			</transform>
+			<choice>
+				<when>
+					<method bean="bookingProcessorRegistry" method="isAirlineSupported"/>
+					<recipientList stopOnException="true" strategyRef="bookingResponseAggregationStrategy">
+						<constant>direct:takePayment, direct:placeBookingWithAirline</constant>
+					</recipientList>
+				</when>
+				<otherwise>
+					<transform>
+						<simple>Unable to book flight for ${body} - unsupported airline</simple>
+					</transform>
+				</otherwise>
+			</choice>
+		</route>
+
+		<route id="takePayment">
+			<from uri="direct:takePayment" />
+			<!-- the main payment process would be defined here -->
+			<transform>
+				<simple>Taking payment for ${body}</simple>
+			</transform>
+		</route>
+
+		<route id="placeBookingWithAirline">
+			<from uri="direct:placeBookingWithAirline" />
+			<!-- work out who to send the message to -->
+			<setHeader headerName="fusesource.bookingProcessor">
+				<method bean="bookingProcessorRegistry" method="getBookingProcessorUri"/>
+			</setHeader>
+			<log message="Calling out to ${headers.fusesource.bookingProcessor}"/>
+			<recipientList>
+				<header>fusesource.bookingProcessor</header>
+			</recipientList>
+		</route>
+	</camelContext>
+
+</beans>
