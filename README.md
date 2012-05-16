@@ -65,7 +65,7 @@ Install the core booking system's OSGi bundles by installing the `flights-bookin
 
 Check that bookings for an Irish Airlines are unsupported by hitting the following from your web browser:
 
-	http://localhost:9191/booking?flightNumber=IE983
+	http://localhost:9191/booking?flightNumber=IE943
 
 This should return:
 
