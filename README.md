@@ -85,7 +85,7 @@ Refresh the URL in your browser, you should now see that as the integration serv
 
 Repeat again for a flight number starting with "DE" and installing the `flights-plugin-german-airline` feature.
 
-Voila! Hot deployable integration (as a service).
+Voila! Hot deployable integrations as plugins.
 
 Next steps
 ==========
