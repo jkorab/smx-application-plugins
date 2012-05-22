@@ -31,7 +31,7 @@
       	<propertyPlaceholder id="properties" location="ref:osgi.properties"/>
 
 		<route id="placeBooking">
-			<from uri="jetty:http://{{host}}:9191/booking" />
+			<from uri="jetty:http://0.0.0.0:{{port}}/booking" />
 			<transform>
 				<simple>${headers.flightNumber}</simple>
 			</transform>
@@ -61,12 +61,12 @@
 		<route id="placeBookingWithAirline">
 			<from uri="direct:placeBookingWithAirline" />
 			<!-- work out who to send the message to -->
-			<setHeader headerName="fusesource.bookingProcessor">
+			<setHeader headerName="bookingProcessor">
 				<method bean="bookingProcessorRegistry" method="getBookingProcessorUri"/>
 			</setHeader>
-			<log message="Calling out to ${headers.fusesource.bookingProcessor}"/>
+			<log message="Calling out to ${headers.bookingProcessor}"/>
 			<recipientList>
-				<header>fusesource.bookingProcessor</header>
+				<header>bookingProcessor</header>
 			</recipientList>
 		</route>
 	</camelContext>

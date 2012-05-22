@@ -26,7 +26,7 @@
 			http://www.springframework.org/schema/osgi-compendium http://www.springframework.org/schema/osgi-compendium/spring-osgi-compendium.xsd">
 
 	<osgix:cm-properties id="osgi.properties" persistent-id="com.fusesource.examples.booking">
-		<prop key="host">localhost</prop>
+		<prop key="port">9191</prop>
 	</osgix:cm-properties>
 
 	<ctx:property-placeholder properties-ref="osgi.properties" />
